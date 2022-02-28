@@ -5,6 +5,8 @@
 			"@components/*": ["./src/components/*"],
 			"@components": ["./src/components/"],
 			"@config": ["./src/config"],
+			"@hooks/*": ["./src/hooks/*"],
+			"@hooks": ["./src/hooks/"],
 			"@models/*": ["./src/models/*"],
 			"@models": ["./src/models"],
 			"@services/*": ["./src/services/*"],

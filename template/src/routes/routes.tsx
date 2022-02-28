@@ -1,28 +1,23 @@
-import { Redirect } from 'react-router';
 import { Home as HomeIcon } from '@mui/icons-material';
-import { IRoute } from '@utils';
-import { Home } from './home';
-import { Counter } from './counter';
+import { IRoute } from '@models';
+import { Homepage } from './Homepage';
+import { Admin, AdminDashboard } from './Admin';
 
 export const ROUTES: IRoute[] = [
 	{
 		path: '/home',
-		component: Home,
-		icon: <HomeIcon />,
+		element: <Homepage />,
+		navbarItem: { icon: <HomeIcon /> },
 	},
 	{
-		path: '/counter',
-		component: Counter,
-		text: 'Counter',
-	},
-	{
-		path: '/page-1',
-		component: () => <p>Page 1</p>,
-		meta: { auth: true },
-		text: 'Page 1',
-	},
-	{
-		path: '/',
-		component: () => <Redirect to="/home" />,
+		path: '/admin',
+		element: <Admin />,
+		navbarItem: { text: 'Admin' },
+		children: [
+			{
+				index: true,
+				element: <AdminDashboard />,
+			},
+		],
 	},
 ];

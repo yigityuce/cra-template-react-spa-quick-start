@@ -18,17 +18,19 @@ export const Navbar: FC = () => {
 				</Typography>
 				<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 					<Tabs value={location.pathname} indicatorColor="primary" textColor="inherit">
-						{ROUTES.map(({ path, text, icon }, i) => {
+						{ROUTES.map(({ path, navbarItem: { icon, text } = {} }, i) => {
 							return (
-								<Tab
-									key={`route-tab-${path}-${i}`}
-									label={text}
-									component={Link}
-									to={path}
-									value={path}
-									icon={icon}
-									iconPosition="start"
-								/>
+								path && (
+									<Tab
+										key={`route-tab-${path}-${i}`}
+										label={text}
+										component={Link}
+										to={path}
+										value={path}
+										icon={icon}
+										iconPosition="start"
+									/>
+								)
 							);
 						})}
 					</Tabs>

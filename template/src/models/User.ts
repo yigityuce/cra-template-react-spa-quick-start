@@ -1,15 +1,13 @@
-import { Dto } from '@utils';
-
 export interface IUser {
 	name: string;
 	surname: string;
 }
 
-export class User extends Dto implements IUser {
+export class User implements IUser {
 	name: string;
 	surname: string;
 
 	constructor(other?: IUser) {
-		super(other);
+		other && Object.assign<typeof this, IUser>(this, other);
 	}
 }
