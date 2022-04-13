@@ -1,0 +1,13 @@
+{
+	"email": "Email",
+	"password": "Password",
+	"login": {
+		"login-button": "LOG IN"
+	},
+	"validation": {
+		"email-invalid": "Enter a valid email",
+		"email-required": "Email is required",
+		"password-min-char-len": "Password should be of minimum 8 characters length",
+		"password-required": "Password is required"
+	}
+}

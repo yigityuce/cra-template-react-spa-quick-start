@@ -1,0 +1,13 @@
+{
+	"email": "Eposta",
+	"password": "Şifre",
+	"login": {
+		"login-button": "GİRİŞ"
+	},
+	"validation": {
+		"email-invalid": "Geçerli bir eposta adresi girin",
+		"email-required": "Eposta adresi zorunlu",
+		"password-min-char-len": "Şifre minimum 8 karakterden oluşmalı",
+		"password-required": "Şifre zorunlu"
+	}
+}

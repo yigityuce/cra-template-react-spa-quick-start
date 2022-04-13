@@ -1,35 +1,129 @@
-import { createTheme } from '@mui/material';
+import { createTheme, Theme } from '@mui/material';
+
+interface CustomThemeProperties {
+	brandColors: {
+		purple: string;
+		turquois: string;
+	};
+}
+
+export type CustomThemeDefinition = Theme & CustomThemeProperties;
 
 // created by using Material-UI Theme Creator
 // See: https://bareynol.github.io/mui-theme-creator
-export const CUSTOM_THEME = createTheme({
-	palette: {
-		mode: 'light',
-		primary: {
-			main: '#556ee6',
+export const CUSTOM_THEME: CustomThemeDefinition = Object.assign<Theme, CustomThemeProperties>(
+	createTheme({
+		components: {
+			MuiButton: {
+				styleOverrides: {
+					root: {
+						textTransform: 'none',
+						borderRadius: 10,
+					},
+				},
+			},
+			MuiOutlinedInput: {
+				styleOverrides: {
+					root: {
+						width: 480,
+						borderRadius: 30,
+						border: '1px solid #FFFFFF',
+						color: '#FFFFFF',
+						padding: '12px 30px',
+					},
+					input: {
+						padding: 0,
+						fontSize: 15,
+						fontWeight: 700,
+						lineHeight: '32px',
+						height: 30,
+						'&:-webkit-autofill': {
+							transition: 'background-color 50000000s ease-in-out 0s',
+							WebkitTextFillColor: '#FFFFFF !important',
+						},
+					},
+					notchedOutline: {
+						border: 'none',
+					},
+				},
+			},
 		},
-		secondary: {
-			main: '#74788d',
+		palette: {
+			mode: 'light',
+			grey: {
+				'50': '#FAFAFA',
+				'100': '#FBFBFB',
+				'200': '#ECECED',
+				'300': '#CECECE',
+				'400': '#BDBDBD',
+				'500': '#9E9E9E',
+				'600': '#757575',
+				'700': '#616161',
+				'800': '#424242',
+				'900': '#212121',
+			},
+			primary: {
+				main: '#0F69AF',
+			},
+			secondary: {
+				main: '#AFCB1F',
+			},
+			background: {
+				default: '#FAFBFB',
+				paper: '#ffffff',
+			},
+			text: {
+				primary: '#6B6B6B',
+				secondary: '#556ee6',
+			},
+			success: {
+				main: '#34c38f',
+			},
+			error: {
+				main: '#f46a6a',
+			},
+			warning: {
+				main: '#f1b44c',
+			},
+			info: {
+				main: '#50a5f1',
+			},
 		},
-		background: {
-			default: '#f8f8fb',
-			paper: '#f6f6f6',
+		typography: {
+			fontFamily: [
+				'Montserrat',
+				'-apple-system',
+				'BlinkMacSystemFont',
+				'Segoe UI',
+				'Roboto',
+				'Oxygen',
+				'Ubuntu',
+				'Cantarell',
+				'Fira Sans',
+				'Droid Sans',
+				'Helvetica Neue',
+				'sans-serif',
+			].join(', '),
+			allVariants: {
+				wordBreak: 'break-all',
+				color: '#6B6B6B',
+			},
+			h1: {
+				fontSize: 18,
+				lineHeight: '57px',
+				fontWeight: 400,
+				letterSpacing: '6px',
+				textTransform: 'uppercase',
+			},
+			body1: {
+				fontSize: 12,
+			},
 		},
-		text: {
-			secondary: '#556ee6',
-			primary: '#495057',
+	}),
+	{
+		brandColors: {
+			purple: '#3D0D6D',
+			turquois: '#09BED1',
 		},
-		success: {
-			main: '#34c38f',
-		},
-		error: {
-			main: '#f46a6a',
-		},
-		warning: {
-			main: '#f1b44c',
-		},
-		info: {
-			main: '#50a5f1',
-		},
-	},
-});
+	}
+);

@@ -1,0 +1,20 @@
+{
+	"profile": "Profi",
+	"logout": "Çıkış",
+	"back": "Geri",
+	"overview": {
+		"title": "Genel"
+	},
+	"history": {
+		"title": "Geçmiş"
+	},
+	"search": {
+		"title": "Arama"
+	},
+	"cart": {
+		"title": "Sepet"
+	},
+	"settings": {
+		"title": "Ayarlar"
+	}
+}

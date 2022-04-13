@@ -6,6 +6,8 @@
 		"font-family-no-duplicate-names": true,
 		"indentation": ["tab", { "indentClosingBrace": false }],
 		"max-empty-lines": 1,
+		"color-hex-length": "long",
+		"string-quotes": "single",
 		"max-line-length": 140,
 		"no-descending-specificity": null,
 		"font-family-no-missing-generic-family-keyword": null,

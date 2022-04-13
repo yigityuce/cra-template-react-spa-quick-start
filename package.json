@@ -1,7 +1,7 @@
 {
   "name": "@yigityuce/cra-template-react-spa-quick-start",
   "version": "1.0.0",
-  "description": "Create React App Custom Templete - typescript, react, redux, rxjs, react-router, react-router-guard, material UI, react-use, sass, eslint, stylelint, prettier",
+  "description": "Create React App Custom Templete - typescript, react, redux, rxjs, react-router, material UI, react-use, sass, eslint, stylelint, prettier",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +16,6 @@
     "redux",
     "rxjs",
     "react-router",
-    "react-router-guard",
     "material",
     "UI",
     "react-use",

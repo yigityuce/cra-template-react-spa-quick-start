@@ -1,41 +1,57 @@
 import { config } from '@config';
-import axios, { AxiosError, Method } from 'axios';
+import axios, { Method } from 'axios';
 import qs from 'qs';
+import { catchError, from, map, tap, throwError } from 'rxjs';
+import { loadingSpinnerOverlayService } from '../loading-spinner-overlay';
 
 export type HttpHeaders = { [header: string]: string };
 export type HttpParams = { [param: string]: any } | URLSearchParams;
+export interface HttpRequestGenericOptions {
+	params?: HttpParams;
+	headers?: HttpHeaders;
+	body?: any;
+	disableLoader?: boolean;
+}
 
-export class HttpService {
+class HttpService {
 	constructor() {
-		axios.interceptors.request.use((axiosConfig) => {
-			if (axiosConfig.baseURL?.includes(config.apiUrl)) {
-				const token = 'ACCESS_TOKEN'; // authService.getToken();
+		axios.interceptors.request.use(async (axiosConfig) => {
+			const targetUrl = [axiosConfig.baseURL, axiosConfig.url].filter(Boolean).join('/');
+			if (targetUrl.includes(config.apiUrl)) {
+				const token = ''; // await authService.getAccessToken();
 				if (token && axiosConfig.headers) axiosConfig.headers.Authorization = `Bearer ${token}`;
 			}
-			return axiosConfig;
+			return Promise.resolve(axiosConfig);
 		});
 		axios.defaults.validateStatus = (status) => `${status}`.startsWith('2');
 	}
 
-	public async get<T = any>(baseURL: string, path?: string, params?: HttpParams, headers?: HttpHeaders) {
-		return this.sendRequest<T>('GET', baseURL, path, null, params, headers);
+	public get<T = any>(baseURL: string, path?: string, opts: HttpRequestGenericOptions = {}) {
+		return this.sendRequest<T>('GET', baseURL, path, opts);
 	}
 
-	public async post<T = any>(baseURL: string, path?: string, body?: any, params?: HttpParams, headers?: HttpHeaders) {
-		return this.sendRequest<T>('POST', baseURL, path, body, params, headers);
+	public post<T = any>(baseURL: string, path?: string, opts: HttpRequestGenericOptions = {}) {
+		return this.sendRequest<T>('POST', baseURL, path, opts);
 	}
 
-	public async put<T = any>(baseURL: string, path?: string, body?: any, params?: HttpParams, headers?: HttpHeaders) {
-		return this.sendRequest<T>('PUT', baseURL, path, body, params, headers);
+	public put<T = any>(baseURL: string, path?: string, opts: HttpRequestGenericOptions = {}) {
+		return this.sendRequest<T>('PUT', baseURL, path, opts);
 	}
 
-	public async delete<T = any>(baseURL: string, path?: string, params?: HttpParams, headers?: HttpHeaders) {
-		return this.sendRequest<T>('DELETE', baseURL, path, null, params, headers);
+	public delete<T = any>(baseURL: string, path?: string, opts: HttpRequestGenericOptions = {}) {
+		return this.sendRequest<T>('DELETE', baseURL, path, opts);
 	}
 
-	public async sendRequest<T = any>(method: Method, baseURL: string, path = '', body?: any, params?: HttpParams, headers?: HttpHeaders) {
-		return axios
-			.request<T>({
+	public sendRequest<T = any>(
+		method: Method,
+		baseURL: string,
+		path = '',
+		{ headers, params, body, disableLoader }: HttpRequestGenericOptions = {}
+	) {
+		!disableLoader && loadingSpinnerOverlayService.increment();
+
+		return from(
+			axios.request<T>({
 				method,
 				baseURL,
 				url: path,
@@ -47,14 +63,14 @@ export class HttpService {
 					return qs.stringify(ps);
 				},
 			})
-			.then((response) => response?.data)
-			.catch((error: AxiosError<any> | Error) => {
-				console.log(
-					`Network Error ${error.message}`,
-					(error as AxiosError)?.isAxiosError ? JSON.stringify((error as AxiosError).toJSON(), null, 2) : (error as any)
-				);
-				throw error;
-			});
+		).pipe(
+			map((response) => response?.data),
+			tap(() => !disableLoader && loadingSpinnerOverlayService.decrement()),
+			catchError((err) => {
+				!disableLoader && loadingSpinnerOverlayService.decrement();
+				return throwError(() => err);
+			})
+		);
 	}
 }
 

@@ -1,0 +1,20 @@
+{
+	"profile": "Profile",
+	"logout": "Logout",
+	"back": "Back",
+	"overview": {
+		"title": "Overview"
+	},
+	"history": {
+		"title": "History"
+	},
+	"search": {
+		"title": "Search"
+	},
+	"cart": {
+		"title": "Cart"
+	},
+	"settings": {
+		"title": "Settings"
+	}
+}

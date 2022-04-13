@@ -1,0 +1,58 @@
+@mixin fontfaceBase($weight, $type) {
+	$fontFileName: 'Regular';
+	@if $weight == 100 {
+		$fontFileName: 'Thin';
+	} @else if $weight == 200 {
+		$fontFileName: 'ExtraLight';
+	} @else if $weight == 300 {
+		$fontFileName: 'Light';
+	} @else if $weight == 400 {
+		$fontFileName: 'Regular';
+	} @else if $weight == 500 {
+		$fontFileName: 'Medium';
+	} @else if $weight == 600 {
+		$fontFileName: 'SemiBold';
+	} @else if $weight == 700 {
+		$fontFileName: 'Bold';
+	} @else if $weight == 800 {
+		$fontFileName: 'ExtraBold';
+	}
+
+	@font-face {
+		font-family: Montserrat;
+		font-style: normal;
+		font-display: swap;
+		font-weight: $weight;
+		src: url('../assets/fonts/Montserrat-#{$fontFileName}.ttf');
+
+		@if $type == 'cyrillic-ext' {
+			unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+		} @else if $type == 'cyrillic' {
+			unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+		} @else if $type == 'vietnamese' {
+			unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+		} @else if $type == 'latin-ext' {
+			unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+		} @else if $type == 'latin' {
+			unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122,
+				U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+		}
+	}
+}
+
+@mixin fontface($weight) {
+	@include fontfaceBase($weight, 'cyrillic-ext');
+	@include fontfaceBase($weight, 'cyrillic');
+	@include fontfaceBase($weight, 'vietnamese');
+	@include fontfaceBase($weight, 'latin-ext');
+	@include fontfaceBase($weight, 'latin');
+}
+
+@include fontface(100);
+@include fontface(200);
+@include fontface(300);
+@include fontface(400);
+@include fontface(500);
+@include fontface(600);
+@include fontface(700);
+@include fontface(800);
