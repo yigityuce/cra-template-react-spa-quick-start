@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-export interface IRoute extends RouteObject {
+export type Route = Omit<RouteObject, 'children'> & {
 	text?: ReactNode;
 	icon?: ReactNode;
 	showInMenu?: boolean;
-	children?: IRoute[];
-}
+	children?: Route[];
+};

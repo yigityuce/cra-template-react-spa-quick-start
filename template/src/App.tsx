@@ -1,14 +1,31 @@
 import { FC } from 'react';
-import { ROUTES } from '@routes';
-import { useRoutes } from 'react-router-dom';
-import { LoadingSpinnerOverlay } from '@components/common';
+import { useLocationChange, useService } from '@hooks';
+import { notificationService } from '@services';
+import { AppRoutes, LoadingSpinnerOverlay, Notification } from '@components/common';
+import { StoreProvider, CustomThemeProvider, TranslationProvider } from './utilities';
 
 export const App: FC = () => {
-	const router = useRoutes(ROUTES);
+	const { data: notification } = useService(notificationService.getSubject);
+	useLocationChange((loc) => {
+		// ! implement app specific route change handler
+		// ReactGA4.send({ hitType: 'pageview', page: location.pathname });
+		console.log('location changed:', loc);
+	});
+
 	return (
-		<>
-			<LoadingSpinnerOverlay />
-			{router}
-		</>
+		<StoreProvider>
+			<CustomThemeProvider>
+				<TranslationProvider>
+					<Notification
+						open={!!notification}
+						onClose={() => notificationService.clear()}
+						alertProps={{ variant: 'outlined' }}
+						{...notification}
+					/>
+					<LoadingSpinnerOverlay />
+					<AppRoutes />
+				</TranslationProvider>
+			</CustomThemeProvider>
+		</StoreProvider>
 	);
 };

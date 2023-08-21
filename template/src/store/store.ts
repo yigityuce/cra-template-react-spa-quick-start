@@ -12,7 +12,7 @@ const createStore = (preloadedState?: RootState) => {
 				key: 'ui-store',
 				storage,
 			},
-			rootReducer
+			rootReducer,
 		),
 		middleware: (getDefaultMiddleware) =>
 			getDefaultMiddleware({

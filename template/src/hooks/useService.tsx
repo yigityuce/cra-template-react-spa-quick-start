@@ -1,30 +1,25 @@
 import { DependencyList, useEffect, useState } from 'react';
 import { Observable } from 'rxjs';
 
-export const useService = <T,>(
-	cb: () => Observable<T>,
-	deps: DependencyList = []
-): { data?: T; error?: Maybe<unknown>; loading: boolean } => {
-	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState<T>();
-	const [error, setError] = useState<unknown>();
+type State<T> = { data?: T; error?: Maybe<unknown>; loading: boolean; trigger: () => void };
 
-	useEffect(() => {
-		setLoading(true);
-		const subscription = cb().subscribe({
-			next: (response) => {
-				setData(response);
-				setError(undefined);
-				setLoading(false);
-			},
-			error: (err) => {
-				setData(undefined);
-				setError(err);
-				setLoading(false);
-			},
-		});
-		return () => subscription.unsubscribe();
-	}, deps);
+export const useService = <T,>(cb: () => Observable<T>, deps: DependencyList = []): State<T> => {
+	const [counter, setCounter] = useState(0);
+	const trigger = () => setCounter(counter + 1);
+	const [state, setState] = useState<State<T>>({ loading: true, data: undefined, error: undefined, trigger });
 
-	return { data, error, loading };
+	useEffect(
+		() => {
+			!state.loading && setState({ ...state, loading: true });
+
+			const subscription = cb().subscribe({
+				next: (response) => setState({ loading: false, error: undefined, data: response, trigger }),
+				error: (err) => setState({ loading: false, error: err, data: undefined, trigger }),
+			});
+			return () => subscription.unsubscribe();
+		},
+		deps ? [counter, ...deps] : [counter],
+	);
+
+	return state;
 };

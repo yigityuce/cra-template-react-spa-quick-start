@@ -1,8 +1,8 @@
-import { FC } from 'react';
-import { TextField, TextFieldProps } from '@mui/material';
-import { Field, FieldProps, useFormik } from 'formik';
-
-type FormikApiType = ReturnType<typeof useFormik>;
+import { FC, ReactNode } from 'react';
+import { Stack, StackProps, TextField, TextFieldProps, Typography, TypographyProps } from '@mui/material';
+import { Field, FieldProps } from 'formik';
+import { FormikApiType } from '@models';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 type TextInputBaseProps = Omit<TextFieldProps, 'error' | 'helperText'> & {
 	name: string;
@@ -11,8 +11,32 @@ type TextInputBaseProps = Omit<TextFieldProps, 'error' | 'helperText'> & {
 	error?: string;
 };
 
-const TextInputBase: FC<TextInputBaseProps> = ({ touched, error, ...props }) => {
-	return <TextField error={touched && !!error} helperText={touched && error} {...props} />;
+const TextInputBase: FC<TextInputBaseProps> = ({ touched, error, value, placeholder, SelectProps, ...props }) => {
+	return (
+		<TextField
+			error={touched && !!error}
+			helperText={touched && error}
+			InputLabelProps={{
+				sx: {
+					'&.MuiInputLabel-root': {
+						color: 'grey.800',
+					},
+					'&.Mui-focused': {
+						color: 'grey.800',
+					},
+				},
+			}}
+			SelectProps={{
+				IconComponent: KeyboardArrowDownIcon,
+				displayEmpty: true,
+				renderValue: value ? undefined : () => <Typography sx={{ color: 'grey.500' }}>{placeholder || ''}</Typography>,
+				...SelectProps,
+			}}
+			placeholder={placeholder}
+			value={value}
+			{...props}
+		/>
+	);
 };
 
 const TextInputWithFormikField: FC<FieldProps & Omit<TextFieldProps, 'error' | 'helperText'>> = ({
@@ -70,13 +94,38 @@ const TextInputWithFormikApi: FC<{ api: FormikApiType } & Omit<TextFieldProps, '
 
 export type FormikTextFieldProps = TextFieldProps & {
 	name: string;
+	title?: ReactNode;
 	formikApi?: FormikApiType;
+	typographyProps?: TypographyProps;
+	containerProps?: StackProps;
+	withoutFormik?: boolean;
+	error?: string;
 };
 
-export const FormikTextfield: FC<FormikTextFieldProps> = ({ name, formikApi, ...props }) => {
-	return formikApi ? (
-		<TextInputWithFormikApi name={name} api={formikApi} {...props} />
-	) : (
-		<Field name={name} component={TextInputWithFormikField} {...props} />
+export const FormikTextfield: FC<FormikTextFieldProps> = ({
+	name,
+	title,
+	formikApi,
+	typographyProps: { sx: typographySx, ...typographyProps } = {},
+	containerProps,
+	withoutFormik,
+	...props
+}) => {
+	return (
+		<Stack direction="column" {...containerProps}>
+			{title ? (
+				<Typography sx={{ marginBottom: 1.25, color: 'grey.800', ...typographySx }} variant="body2" {...typographyProps}>
+					{title}
+					{props.required ? '*' : ''}
+				</Typography>
+			) : null}
+			{formikApi ? (
+				<TextInputWithFormikApi name={name} api={formikApi} {...props} />
+			) : withoutFormik ? (
+				<TextInputBase name={name} value="" {...props} />
+			) : (
+				<Field name={name} component={TextInputWithFormikField} {...props} />
+			)}
+		</Stack>
 	);
 };

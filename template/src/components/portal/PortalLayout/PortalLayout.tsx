@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Grid } from '@mui/material';
 import { Topbar } from '../Topbar';
 import { LeftSidebar } from '../LeftSidebar';
 
-export const PortalLayout: FC = ({ children }) => {
+export const PortalLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<Grid container sx={{ flexGrow: 1, backgroundColor: 'background.default' }}>
 			<Grid item>

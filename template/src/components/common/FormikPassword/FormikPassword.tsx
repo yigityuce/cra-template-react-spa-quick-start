@@ -6,6 +6,7 @@ import { FormikTextfield, FormikTextFieldProps } from '../FormikTextfield';
 
 export const FormikPassword: FC<FormikTextFieldProps> = ({ ...props }) => {
 	const [showPassword, setShowPassword] = useState(false);
+	const { disabled } = props;
 
 	return (
 		<FormikTextfield
@@ -15,10 +16,10 @@ export const FormikPassword: FC<FormikTextFieldProps> = ({ ...props }) => {
 				endAdornment: (
 					<InputAdornment position="end" sx={{ color: 'inherit' }}>
 						<IconButton
-							color="inherit"
 							onClick={() => setShowPassword(!showPassword)}
 							onMouseDown={(e) => e.preventDefault()}
 							edge="end"
+							sx={{ color: disabled ? 'grey.500' : 'primary.main' }}
 						>
 							{showPassword ? <VisibilityOff color="inherit" /> : <Visibility color="inherit" />}
 						</IconButton>

@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from 'react';
 import styles from './UserAvatar.module.scss';
-import { Tr } from '@utils';
+import { TranslatedText } from '@utilities';
 import { Avatar, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Menu, Stack, StackProps, Typography } from '@mui/material';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
@@ -22,23 +22,23 @@ export const UserAvatar: FC<IUserAvatarProps> = ({ noDropdown, username, childre
 				sx={{ p: 0, color: 'inherit' }}
 				onClick={() => setUserMenuVisibility(!userMenuVisibility)}
 			>
-				<Avatar
-					sx={{
-						bgcolor: 'grey.100',
-						color: 'inherit',
-						p: 0.5,
-						width: 60,
-						height: 60,
-						boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.08)',
-					}}
-				>
-					{children || ''}
-				</Avatar>
 				{username && (
 					<Typography variant="body1" sx={{ px: 1, fontStyle: 'italic' }}>
 						{username}
 					</Typography>
 				)}
+				<Avatar
+					sx={{
+						bgcolor: 'grey.100',
+						color: 'inherit',
+						p: 0.5,
+						width: 32,
+						height: 32,
+						boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.08)',
+					}}
+				>
+					{children || ''}
+				</Avatar>
 			</IconButton>
 			{!noDropdown && (
 				<Menu
@@ -49,13 +49,13 @@ export const UserAvatar: FC<IUserAvatarProps> = ({ noDropdown, username, childre
 				>
 					<List disablePadding sx={{ minWidth: avatarRef.current?.clientWidth }}>
 						<ListItemButton dense classes={{ root: styles.ListItem }}>
-							<ListItemText primary={<Tr.Portal path="profile" />} />
+							<ListItemText primary={<TranslatedText.Portal path="profile" />} />
 							<ListItemIcon classes={{ root: styles.ListItemIcon }}>
 								<AccountCircleOutlinedIcon fontSize="small" />
 							</ListItemIcon>
 						</ListItemButton>
 						<ListItemButton dense classes={{ root: styles.ListItem }} sx={{ color: 'error.main' }}>
-							<ListItemText primary={<Tr.Portal path="logout" />} />
+							<ListItemText primary={<TranslatedText.Portal path="logout" />} />
 							<ListItemIcon classes={{ root: styles.ListItemIcon }}>
 								<PowerSettingsNewIcon fontSize="small" sx={{ color: 'error.main' }} />
 							</ListItemIcon>

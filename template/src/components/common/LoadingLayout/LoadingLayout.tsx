@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 
-export const LoadingLayout: FC = ({ children }) => {
+export const LoadingLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<Box
 			sx={{

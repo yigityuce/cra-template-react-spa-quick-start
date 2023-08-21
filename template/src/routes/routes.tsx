@@ -1,17 +1,12 @@
 import { Navigate } from 'react-router-dom';
-import { IRoute } from '@models';
+import { Route } from '@models';
 import { Homepage } from './Homepage';
 import { PORTAL_ROUTES } from './Portal';
-import { Login } from './Login';
 
-export const ROUTES: IRoute[] = [
+export const ROUTES: Route[] = [
 	{
 		path: '/home',
 		element: <Homepage />,
-	},
-	{
-		path: '/login',
-		element: <Login />,
 	},
 	PORTAL_ROUTES,
 	{

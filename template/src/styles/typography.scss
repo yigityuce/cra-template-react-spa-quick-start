@@ -23,7 +23,7 @@
 		font-style: normal;
 		font-display: swap;
 		font-weight: $weight;
-		src: url('../assets/fonts/Montserrat-#{$fontFileName}.ttf');
+		src: url('../assets/fonts/Montserrat/Montserrat-#{$fontFileName}.ttf');
 
 		@if $type == 'cyrillic-ext' {
 			unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;

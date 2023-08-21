@@ -1,12 +1,14 @@
 import { forwardRef } from 'react';
 import { Button, ButtonProps } from '@mui/material';
 import { Link as ReactRouterDomLink } from 'react-router-dom';
-import { RouterUtils } from '@utils';
+import { RouterUtils } from '@utilities';
+
+type BorderPosition = 'top' | 'right' | 'bottom' | 'left';
 
 export interface ILeftSidebarItemProps extends Omit<ButtonProps, 'classes' | 'size' | 'LinkComponent' | 'variant'> {
 	size?: number;
 	active?: boolean;
-	borderPosition?: 'top' | 'right' | 'bottom' | 'left';
+	borderPosition?: BorderPosition | BorderPosition[];
 }
 
 const BORDER_TOP_SX: ILeftSidebarItemProps['sx'] = {
@@ -33,7 +35,7 @@ const BORDER_LEFT_SX: ILeftSidebarItemProps['sx'] = {
 	borderLeftColor: 'grey.200',
 };
 
-const getBorderSx = (pos: ILeftSidebarItemProps['borderPosition']): ILeftSidebarItemProps['sx'] => {
+const getBorderSx = (pos?: BorderPosition): ILeftSidebarItemProps['sx'] => {
 	if (pos === 'top') return BORDER_TOP_SX;
 	else if (pos === 'right') return BORDER_RIGHT_SX;
 	else if (pos === 'bottom') return BORDER_BOTTOM_SX;
@@ -46,7 +48,7 @@ const Link = forwardRef<HTMLAnchorElement, { href: string }>(({ href, ...props }
 ));
 
 export const LeftSidebarItem = forwardRef<HTMLButtonElement, ILeftSidebarItemProps>(
-	({ href, size = 100, active, borderPosition, sx = {}, ...props }, ref) => {
+	({ href, size = 64, active, borderPosition, sx = {}, ...props }, ref) => {
 		const isLocationMatched = RouterUtils.isLocationAndRouteMatched(href);
 		return (
 			<Button
@@ -58,16 +60,23 @@ export const LeftSidebarItem = forwardRef<HTMLButtonElement, ILeftSidebarItemPro
 				sx={{
 					borderRadius: 0,
 					backgroundColor: 'transparent',
+					boxSizing: 'border-box',
 					color: active || isLocationMatched ? 'primary.main' : 'grey.300',
 					'&:hover': {
 						color: 'primary.main',
 					},
-					...(getBorderSx(borderPosition) as any),
+					...((Array.isArray(borderPosition)
+						? borderPosition.reduce((acc, cur) => ({ ...acc, ...getBorderSx(cur) }), {})
+						: getBorderSx(borderPosition)) as Record<string, unknown>),
 					...sx,
 					width: size,
+					minWidth: size,
+					maxWidth: size,
 					height: size,
+					minHeight: size,
+					maxHeight: size,
 				}}
 			/>
 		);
-	}
+	},
 );

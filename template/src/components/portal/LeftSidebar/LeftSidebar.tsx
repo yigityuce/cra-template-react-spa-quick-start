@@ -1,20 +1,20 @@
-import { FC } from 'react';
-import { matchRoutes, useLocation, useNavigate } from 'react-router-dom';
-import { IRoute } from '@models';
+import { FC, PropsWithChildren } from 'react';
+import { matchRoutes, RouteObject, useLocation, useNavigate } from 'react-router-dom';
+import { Route } from '@models';
 import { ROUTES } from '@routes';
-import { Tr } from '@utils';
+import { TranslatedText } from '@utilities';
 import { Box, Stack, Tooltip } from '@mui/material';
 import { LeftSidebarItem } from '../LeftSidebarItem';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
-export const LeftSidebar: FC = () => {
+export const LeftSidebar: FC<PropsWithChildren> = () => {
 	const navigate = useNavigate();
 	const loc = useLocation();
-	const matches = matchRoutes(ROUTES, loc);
-	const { path, children = [] } = matches?.[0].route as IRoute;
+	const matches = matchRoutes(ROUTES as RouteObject[], loc);
+	const { path, children = [] } = matches?.[0].route as Route;
 	const childRoutes = children.filter((child) => child.showInMenu);
-	const onLogoutClicked = () => navigate('/login', { state: { redirect: loc.pathname } });
+	const onLogoutClicked = () => navigate('/home', { state: { redirect: loc.pathname } });
 
 	return (
 		<Stack
@@ -27,11 +27,9 @@ export const LeftSidebar: FC = () => {
 				boxShadow: '5px 0px 13px rgba(203, 203, 203, 0.25)',
 			}}
 		>
-			<Tooltip title={<Tr.Portal path="back" />} arrow placement="right">
-				<LeftSidebarItem active borderPosition="right" sx={{ backgroundColor: 'common.white' }} onClick={() => navigate(-1)}>
-					<ArrowBackIosNewRoundedIcon color="inherit" fontSize="large" />
-				</LeftSidebarItem>
-			</Tooltip>
+			<LeftSidebarItem active borderPosition="bottom" sx={{ backgroundColor: 'common.white' }} onClick={() => navigate(-1)}>
+				<ArrowBackIosNewRoundedIcon color="inherit" fontSize="medium" />
+			</LeftSidebarItem>
 
 			{childRoutes.map((childRoute, i) => {
 				const navigateTo = `${path ? path + '/' : ''}${childRoute.path}`;
@@ -44,9 +42,9 @@ export const LeftSidebar: FC = () => {
 				);
 			})}
 
-			<Tooltip title={<Tr.Portal path="logout" />} arrow placement="top">
+			<Tooltip title={<TranslatedText.Portal path="logout" />} arrow placement="top">
 				<LeftSidebarItem borderPosition="top" sx={{ marginTop: 'auto' }} onClick={onLogoutClicked}>
-					<LogoutRoundedIcon color="inherit" fontSize="large" />
+					<LogoutRoundedIcon color="inherit" fontSize="medium" />
 				</LeftSidebarItem>
 			</Tooltip>
 		</Stack>
